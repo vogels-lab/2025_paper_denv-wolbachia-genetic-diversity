@@ -75,13 +75,7 @@ model_ri <- glmer(
   control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
 )
 
-# --- Best model: random slope for Wolbachia inhibition by isolate ---
-# Singular due to r=0.999 between wAlbB and wMel slopes
-# Valid for LRT and fixed effect reporting
-
-# 1 | Virus = random intercept → each virus isolate gets its own baseline dissemination
-# Mosquito_strain | Virus = random slope → each isolate is allowed to respond differently to mosquito strain
-
+ 
 
 model_rs_strain <- glmer(
   cbind(infected, sample_size - infected) ~
@@ -94,9 +88,7 @@ model_rs_strain <- glmer(
 
 summary(model_rs_strain)
 
-# --- Same model, correlation constrained to zero ---
-# Resolves singularity; used for plotting (stable CIs)
-# Biologically equivalent: still allows Wolbachia inhibition to vary by isolate
+
 model_rs_strain_nocor <- glmer(
   cbind(infected, sample_size - infected) ~
     log10_titre_scaled * Mosquito_strain + Serotype +
@@ -139,10 +131,10 @@ pred <- ggpredict(
   type  = "fixed"
 )
 
-# Back-transform x to original log10 scale
+
 pred$x_orig <- pred$x * titre_sd + titre_mean
 
-# Rename pred facet column to match observed data column name
+
 pred$Serotype_label <- paste0("DENV-", pred$facet)
 
 Fig_revised_A <- ggplot() +
