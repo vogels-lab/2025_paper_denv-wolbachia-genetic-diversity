@@ -75,12 +75,7 @@ model_ri <- glmer(
   control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
 )
 
-# --- Best model: random slope for Wolbachia inhibition by isolate ---
-# Singular due to r=0.999 between wAlbB and wMel slopes
-# Valid for LRT and fixed effect reporting
-
-# 1 | Virus = random intercept → each virus isolate gets its own baseline infection
-# Mosquito_strain | Virus = random slope → each isolate is allowed to respond differently to mosquito strain
+ 
 
 
 model_rs_strain <- glmer(
